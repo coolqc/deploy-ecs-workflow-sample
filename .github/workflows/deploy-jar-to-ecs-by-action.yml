@@ -57,19 +57,19 @@ jobs:
           yum install -y java-1.8.0-openjdk  java-1.8.0-openjdk-devel
 
     # 停止服务并备份老版本,初次部署可以跳过
-    - name: Batch Remote SSH Commands
-      uses: huaweicloud/ssh-remote-action@v1.0.0
-      with:
-        ipaddr: ${{ env.ipaddr }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        commands: |
-          mkdir -p /opt/backup/demoapp/${{ env.CURRENT_DATE }}
-          mv /usr/local/demoapp.jar /opt/backup/demoapp/${{ env.CURRENT_DATE }}
-          cp /usr/local/start-demoapp.sh /opt/backup/demoapp/${{ env.CURRENT_DATE }}
-          cp /usr/local/stop-demoapp.sh /opt/backup/demoapp/${{ env.CURRENT_DATE }}
-          cp /etc/systemd/system/demoapp.service /opt/backup/demoapp/${{ env.CURRENT_DATE }}
-          ls -la /opt/backup/demoapp/${{ env.CURRENT_DATE }}
+    # - name: Batch Remote SSH Commands
+    #  uses: huaweicloud/ssh-remote-action@v1.0.0
+    #  with:
+    #    ipaddr: ${{ env.ipaddr }}
+    #    username: ${{ secrets.USERNAME }}
+    #    password: ${{ secrets.PASSWORD }}
+    #    commands: |
+    #      mkdir -p /opt/backup/demoapp/${{ env.CURRENT_DATE }}
+    #      mv /usr/local/demoapp.jar /opt/backup/demoapp/${{ env.CURRENT_DATE }}
+    #      cp /usr/local/start-demoapp.sh /opt/backup/demoapp/${{ env.CURRENT_DATE }}
+    #      cp /usr/local/stop-demoapp.sh /opt/backup/demoapp/${{ env.CURRENT_DATE }}
+    #      cp /etc/systemd/system/demoapp.service /opt/backup/demoapp/${{ env.CURRENT_DATE }}
+    #      ls -la /opt/backup/demoapp/${{ env.CURRENT_DATE }}
 
     # 部署服务 部署jar包，并添加到systemctl 服务器中，方便启停
     - name: upload local file to remote server,deploy service
@@ -96,7 +96,7 @@ jobs:
           chmod 755 /usr/local/start-demoapp.sh
           systemctl daemon-reload
           chmod 755 /usr/local/stop-demoapp.sh
-          systemctl restart demoapp.service
+          systemctl start demoapp.service
 
     # 检测前端页面和后端接口是否都能正常访问
     - name: check web app status
