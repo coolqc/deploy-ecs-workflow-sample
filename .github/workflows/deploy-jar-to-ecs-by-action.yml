@@ -71,7 +71,7 @@ jobs:
     #      cp /etc/systemd/system/demoapp.service /opt/backup/demoapp/${{ env.CURRENT_DATE }}
     #      ls -la /opt/backup/demoapp/${{ env.CURRENT_DATE }}
 
-    # 部署服务 部署jar包，并添加到systemctl 服务器中，方便启停
+    # 部署服务 部署jar包，并添加到systemctl 服务器中，方便启停1
     - name: upload local file to remote server,deploy service
       uses: huaweicloud/scp-remote-action@v1.0.0
       with:
