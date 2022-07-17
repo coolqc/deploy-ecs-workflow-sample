@@ -8,7 +8,7 @@ on:
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
   CURRENT_DATE: ''
-  ipaddr: 121.36.32.123
+  ipaddr: 114.116.212.250
   REGIONID: cn-north-4 
 jobs:
   build:
@@ -33,17 +33,17 @@ jobs:
       run: mvn clean -U package -Dmaven.test.skip 
 
     # 上传当前版本到OBS中归档，需要提前准备OBS的AK/SK,并在github项目添加ACCESSKEY和SECRETACCESSKEY两个secrets1
-    - name: Upload To Huawei OBS
-      uses: huaweicloud/obs-helper@v1.0.0
-      id: upload_file_to_obs
-      with:
-        access_key: ${{ secrets.ACCESSKEY }}
-        secret_key: ${{ secrets.SECRETACCESSKEY }}
-        region: ${{ env.REGIONID }}
-        bucket_name: hdn-github-action
-        operation_type: upload
-        local_file_path: target/demoapp.jar
-        obs_file_path: workflow/springboot-web/v1/
+    #- name: Upload To Huawei OBS
+    #  uses: huaweicloud/obs-helper@v1.0.0
+    #  id: upload_file_to_obs
+    #  with:
+    #    access_key: ${{ secrets.ACCESSKEY }}
+    #    secret_key: ${{ secrets.SECRETACCESSKEY }}
+    #    region: ${{ env.REGIONID }}
+    #    bucket_name: hdn-github-action
+    #    operation_type: upload
+    #    local_file_path: target/demoapp.jar
+    #    obs_file_path: workflow/springboot-web/v1/
 
 
     # 检查并安装jdk,当前demo需要安装jdk1.8,高版本可能不兼容,初始化系统是需要，如果不需要可以跳过
