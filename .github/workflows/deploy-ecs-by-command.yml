@@ -1,9 +1,9 @@
-name: "commit-master"
+name: "commit-command-branch"
 
 on:
   push:
     branches: 
-    - 'master'
+    - 'command'
 env: 
   ipaddr: ${ip_address}
   REGIONID: ${region_id}
