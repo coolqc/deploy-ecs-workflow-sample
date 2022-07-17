@@ -1,15 +1,15 @@
-name: "commit-master"
+name: "commit-deploy-jar"
 
 on:
   push:
     branches: 
-    - 'master'
+    - 'deploy-jar'
 
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
   CURRENT_DATE: ''
-  ipaddr: ${ip_address}
-  REGIONID: ${region_id} 
+  ipaddr: 114.116.212.250
+  REGIONID: cn-north-4 
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,18 +32,18 @@ jobs:
     - name: build maven project
       run: mvn clean -U package -Dmaven.test.skip 
 
-    # 上传当前版本到OBS中归档，需要提前准备OBS的AK/SK,并在github项目添加ACCESSKEY和SECRETACCESSKEY两个secrets
-    - name: Upload To Huawei OBS
-      uses: huaweicloud/obs-helper@v1.0.0
-      id: upload_file_to_obs
-      with:
-        access_key: ${{ secrets.ACCESSKEY }}
-        secret_key: ${{ secrets.SECRETACCESSKEY }}
-        region: ${{ env.REGIONID }}
-        bucket_name: bucket-test
-        operation_type: upload
-        local_file_path: target/demoapp.jar
-        obs_file_path: workflow/springboot-web/v1.0.0.1/
+    # 上传当前版本到OBS中归档，需要提前准备OBS的AK/SK,并在github项目添加ACCESSKEY和SECRETACCESSKEY两个secrets1
+    #- name: Upload To Huawei OBS
+    #  uses: huaweicloud/obs-helper@v1.0.0
+    #  id: upload_file_to_obs
+    #  with:
+    #    access_key: ${{ secrets.ACCESSKEY }}
+    #    secret_key: ${{ secrets.SECRETACCESSKEY }}
+    #    region: ${{ env.REGIONID }}
+    #    bucket_name: hdn-github-action
+    #    operation_type: upload
+    #    local_file_path: target/demoapp.jar
+    #    obs_file_path: workflow/springboot-web/v1/
 
 
     # 检查并安装jdk,当前demo需要安装jdk1.8,高版本可能不兼容,初始化系统是需要，如果不需要可以跳过
@@ -57,7 +57,7 @@ jobs:
           yum install -y java-1.8.0-openjdk  java-1.8.0-openjdk-devel
 
     # 停止服务并备份老版本,初次部署可以跳过
-    - name: backup app and service file
+    - name: Batch Remote SSH Commands
       uses: huaweicloud/ssh-remote-action@v1.0.0
       with:
         ipaddr: ${{ env.ipaddr }}
@@ -71,7 +71,7 @@ jobs:
           cp /etc/systemd/system/demoapp.service /opt/backup/demoapp/${{ env.CURRENT_DATE }}
           ls -la /opt/backup/demoapp/${{ env.CURRENT_DATE }}
 
-    # 部署服务 部署jar包，并添加到systemctl 服务器中，方便启停
+    # 部署服务 部署jar包，并添加到systemctl 服务器中，方便启停1
     - name: upload local file to remote server,deploy service
       uses: huaweicloud/scp-remote-action@v1.0.0
       with:
